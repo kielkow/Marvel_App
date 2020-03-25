@@ -3,9 +3,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
+import * as Yup from 'yup';
 
 // import { Container } from './styles';
 import logo from '~/assets/logo.png';
+
+const schema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  email: Yup.string()
+    .email('Invalid e-mail')
+    .required('Email is required'),
+  password: Yup.string()
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
+});
 
 export default function SignUp() {
   function handleSubmit(data) {
@@ -16,7 +27,7 @@ export default function SignUp() {
     <>
       <img src={logo} alt="MarvelApp" />
 
-      <Form onSubmit={handleSubmit}>
+      <Form schema={schema} onSubmit={handleSubmit}>
         <label>NAME</label>
         <Input name="name" placeholder="Your full name..." />
 
