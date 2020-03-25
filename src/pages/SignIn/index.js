@@ -12,18 +12,16 @@ import { signInRequest } from '~/store/modules/auth/actions';
 import logo from '~/assets/logo.png';
 
 const schema = Yup.object().shape({
-  email: Yup.string()
-    .email('Invalid e-mail')
-    .required('Email is required'),
-  password: Yup.string().required('Password is required'),
+  privatekey: Yup.string().required('Private key is required'),
+  publickey: Yup.string().required('Public key is required'),
 });
 
 export default function SignIn() {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.auth.loading);
 
-  function handleSubmit({ email, password }) {
-    dispatch(signInRequest(email, password));
+  function handleSubmit({ privatekey, publickey }) {
+    dispatch(signInRequest(privatekey, publickey));
   }
 
   return (
@@ -31,11 +29,15 @@ export default function SignIn() {
       <img src={logo} alt="MarvelApp" />
 
       <Form schema={schema} onSubmit={handleSubmit}>
-        <label>E-MAIL</label>
-        <Input name="email" type="email" placeholder="Your e-mail..." />
+        <label>PRIVATE KEY</label>
+        <Input
+          name="privatekey"
+          type="text"
+          placeholder="Your private key..."
+        />
 
-        <label>PASSWORD</label>
-        <Input name="password" type="password" placeholder="Your password..." />
+        <label>PUBLIC KEY</label>
+        <Input name="publickey" type="text" placeholder="Your public key..." />
 
         <button type="submit">{loading ? 'Loading...' : 'Enter'}</button>
         <Link to="/register">Create free account</Link>

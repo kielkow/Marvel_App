@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
+import md5 from 'md5';
 
 import api from '~/services/api';
 import history from '~/services/history';
@@ -9,27 +10,29 @@ import { signInSuccess, signFailure } from './actions';
 
 export function* signIn({ payload }) {
   try {
-    const { email, password } = payload;
+    const { privatekey, publickey } = payload;
+    const timestamp = Math.floor(Date.now() / 1000);
+    const hash = md5(`${timestamp}${privatekey}${publickey}`);
 
-    const response = yield call(api.post, 'sessions', {
-      email,
-      password,
-    });
+    const response = yield call(
+      api.get,
+      '/v1/public/characters' +
+        `?ts=${timestamp}` +
+        `&apikey=${publickey}` +
+        `&hash=${hash}` +
+        `&offset=0&limit=10`
+    );
 
-    const { token, user } = response.data;
-
-    if (!user.provider) {
-      toast.error('User not provider');
-      return;
-    }
+    const { etag } = response.data;
+    const token = etag;
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
-    yield put(signInSuccess(token, user));
+    yield put(signInSuccess(token));
 
     history.push('/dashboard');
   } catch (err) {
-    toast.error('Authentication failure, please verify your data');
+    toast.error('Authentication failure, please check your keys');
     yield put(signFailure());
   }
 }
