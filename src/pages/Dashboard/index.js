@@ -1,20 +1,19 @@
 /* eslint-disable prefer-const */
 import React, { useState, useEffect } from 'react';
-// import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input } from '@rocketseat/unform';
 import { MdEdit } from 'react-icons/md';
 import { FaSuperpowers } from 'react-icons/fa';
 
 import { parseISO, format } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
+import history from '~/services/history';
 
-// import history from '~/services/history';
 import { Container, Content, Pagination, Previous, Next } from './styles';
 
 import api from '~/services/api';
 
-// import * as HeroActions from '../../store/modules/hero/actions';
+import * as HeroActions from '../../store/modules/hero/actions';
 
 export default function Dashboard() {
   const [heroes, setHeroes] = useState([]);
@@ -24,7 +23,7 @@ export default function Dashboard() {
   const userInfo = useSelector(state => state.auth);
   const heroesdata = useSelector(state => state.user.heroes);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function loadHeroes() {
@@ -58,11 +57,10 @@ export default function Dashboard() {
     userInfo.timestamp,
   ]);
 
-  /*
-  function editRequest(student) {
-    dispatch(StudentActions.updateStudentRequest(student));
+  function editRequest(hero) {
+    dispatch(HeroActions.updateHeroRequest(hero));
+    history.push('/hero');
   }
-  */
 
   async function next() {
     setLoadingNext(true);
@@ -178,7 +176,7 @@ export default function Dashboard() {
                   ).replace(/-/g, '/')}
                   h
                 </span>
-                <MdEdit size={22} value={hero.id} />
+                <MdEdit size={22} onClick={() => editRequest(hero)} />
               </li>
             ))
           )}
