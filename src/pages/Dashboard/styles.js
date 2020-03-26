@@ -89,6 +89,10 @@ export const Content = styled.div`
     }
     li > span:first-child + span {
       width: 64%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: 15px;
     }
     li > span:first-child + span + span {
       width: 31%;
@@ -102,6 +106,7 @@ export const Content = styled.div`
   }
   header > span:first-child + span {
     width: 73.5%;
+    margin-right: 15px;
   }
   header > span:first-child + span + span {
     width: 40.5%;

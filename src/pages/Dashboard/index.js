@@ -1,6 +1,7 @@
 /* eslint-disable prefer-const */
 import React, { useState, useEffect } from 'react';
 // import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Input } from '@rocketseat/unform';
 import { MdEdit } from 'react-icons/md';
 
@@ -12,66 +13,29 @@ import { Container, Content, Pagination, Previous, Next } from './styles';
 
 import api from '~/services/api';
 
-// import * as StudentActions from '../../store/modules/student/actions';
+// import * as HeroActions from '../../store/modules/hero/actions';
 
 export default function Dashboard() {
   const [heroes, setHeroes] = useState([]);
   let [page, setPage] = useState(1);
   const [loadingNext, setLoadingNext] = useState(false);
   const [finalPage, setFinalPage] = useState(false);
+  const userInfo = useSelector(state => state.auth);
+  const heroesdata = useSelector(state => state.user.heroes);
 
   // const dispatch = useDispatch();
 
   useEffect(() => {
     async function loadHeroes() {
-      /*
-      const response = await api.get('/ordersheroes', {
+      setHeroes(heroesdata.data.results);
+
+      const checkFinalPage = await api.get('/v1/public/characters', {
         params: {
-          page,
-        },
-      });
-
-      const { data } = response;
-      */
-
-      const data = [
-        {
-          id: 1,
-          name: 'Hero 1',
-          description: 'Description 1',
-          modified: '2014-04-29T14:18:17-0400',
-        },
-        {
-          id: 2,
-          name: 'Hero 2',
-          description: 'Description 2',
-          modified: '2014-04-29T14:18:17-0400',
-        },
-        {
-          id: 3,
-          name: 'Hero 3',
-          description: 'Description 3',
-          modified: '2014-04-29T14:18:17-0400',
-        },
-        {
-          id: 4,
-          name: 'Hero 4',
-          description: 'Description 4',
-          modified: '2014-04-29T14:18:17-0400',
-        },
-        {
-          id: 5,
-          name: 'Hero 5',
-          description: 'Description 5',
-          modified: '2014-04-29T14:18:17-0400',
-        },
-      ];
-
-      setHeroes(data);
-
-      const checkFinalPage = await api.get('/ordersheroes', {
-        params: {
-          page: page + 1,
+          ts: userInfo.timestamp,
+          apikey: userInfo.publickey,
+          hash: userInfo.hash,
+          limit: 5,
+          offset: (page - 1) * 5,
         },
       });
 
@@ -85,31 +49,13 @@ export default function Dashboard() {
     }
 
     loadHeroes();
-  }, [page]);
-
-  /*
-  async function reloadHeroes() {
-    const response = await api.get('/ordersheroes', {
-      params: {
-        page,
-      },
-    });
-    const { data } = response;
-    setHeroes(data);
-    const checkFinalPage = await api.get('/ordersheroes', {
-      params: {
-        page: page + 1,
-      },
-    });
-    if (checkFinalPage.data.length === 0) {
-      setLoadingNext(false);
-      setFinalPage(true);
-    } else {
-      setLoadingNext(false);
-      setFinalPage(false);
-    }
-  }
-  */
+  }, [
+    heroesdata.data.results,
+    page,
+    userInfo.hash,
+    userInfo.publickey,
+    userInfo.timestamp,
+  ]);
 
   /*
   function editRequest(student) {
@@ -122,15 +68,25 @@ export default function Dashboard() {
 
     setPage((page += 1));
 
-    const pageHeroes = await api.get('/ordersheroes', {
+    const pageHeroes = await api.get('/v1/public/characters', {
       params: {
-        page,
+        ts: userInfo.timestamp,
+        apikey: userInfo.publickey,
+        hash: userInfo.hash,
+        limit: 5,
+        offset: (page - 1) * 5,
       },
     });
 
-    const checkFinalPage = await api.get('/ordersheroes', {
+    page += 1;
+
+    const checkFinalPage = await api.get('/v1/public/characters', {
       params: {
-        page: page + 1,
+        ts: userInfo.timestamp,
+        apikey: userInfo.publickey,
+        hash: userInfo.hash,
+        limit: 5,
+        offset: (page - 1) * 5,
       },
     });
 
@@ -152,9 +108,13 @@ export default function Dashboard() {
       setPage((page -= 1));
     }
 
-    const pageHeroes = await api.get('/ordersheroes', {
+    const pageHeroes = await api.get('/v1/public/characters', {
       params: {
-        page,
+        ts: userInfo.timestamp,
+        apikey: userInfo.publickey,
+        hash: userInfo.hash,
+        limit: 5,
+        offset: (page - 1) * 5,
       },
     });
 
@@ -199,21 +159,23 @@ export default function Dashboard() {
           {heroes.length === 0 ? (
             <span style={{ color: '#444444' }}> Any hero found...</span>
           ) : (
-            heroes.map(heroe => (
-              <li key={heroe.id}>
-                <span>{heroe.name}</span>
-                <span>{heroe.description}</span>
+            heroes.map(hero => (
+              <li key={hero.id}>
+                <span>{hero.name}</span>
+                <span>
+                  {hero.description || 'This hero don´t have a description'}
+                </span>
                 <span>
                   {format(
                     zonedTimeToUtc(
-                      parseISO(heroe.modified),
+                      parseISO(hero.modified),
                       'America/Sao_Paulo'
                     ),
                     'dd-MM-yyyy hh:mm'
                   ).replace(/-/g, '/')}
                   h
                 </span>
-                <MdEdit size={22} />
+                <MdEdit size={22} value={hero.id} />
               </li>
             ))
           )}

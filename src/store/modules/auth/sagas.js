@@ -20,15 +20,15 @@ export function* signIn({ payload }) {
         `?ts=${timestamp}` +
         `&apikey=${publickey}` +
         `&hash=${hash}` +
-        `&offset=0&limit=10`
+        `&offset=0&limit=5`
     );
 
-    const { etag } = response.data;
-    const token = etag;
+    const token = response.data.etag;
+    const heroes = response.data;
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
-    yield put(signInSuccess(token));
+    yield put(signInSuccess(token, heroes, timestamp, publickey, hash));
 
     history.push('/dashboard');
   } catch (err) {
