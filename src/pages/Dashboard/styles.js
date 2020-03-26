@@ -8,9 +8,14 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   strong {
+    display: flex;
+    align-items: center;
     font-size: 24px;
     color: ${lighten(0.03, '#444444')};
     margin-bottom: 40px;
+    svg {
+      margin-right: 5px;
+    }
   }
   header {
     display: flex;

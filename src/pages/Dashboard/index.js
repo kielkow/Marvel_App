@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Input } from '@rocketseat/unform';
 import { MdEdit } from 'react-icons/md';
+import { FaSuperpowers } from 'react-icons/fa';
 
 import { parseISO, format } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
@@ -137,7 +138,10 @@ export default function Dashboard() {
 
   return (
     <Container>
-      <strong>Marvel Heroes</strong>
+      <strong>
+        <FaSuperpowers />
+        Marvel Heroes
+      </strong>
       <header>
         <Input
           name="name"
