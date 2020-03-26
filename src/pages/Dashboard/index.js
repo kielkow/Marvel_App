@@ -35,7 +35,7 @@ export default function Dashboard() {
           apikey: userInfo.publickey,
           hash: userInfo.hash,
           limit: 5,
-          offset: (page - 1) * 5,
+          offset: (page + 1 - 1) * 5,
         },
       });
 
@@ -78,25 +78,24 @@ export default function Dashboard() {
       },
     });
 
-    page += 1;
-
     const checkFinalPage = await api.get('/v1/public/characters', {
       params: {
         ts: userInfo.timestamp,
         apikey: userInfo.publickey,
         hash: userInfo.hash,
         limit: 5,
-        offset: (page - 1) * 5,
+        offset: (page + 1 - 1) * 5,
       },
     });
 
     if (checkFinalPage.data.data.results.length === 0) {
-      setHeroes(pageHeroes.data.data.results);
       setLoadingNext(false);
       setFinalPage(true);
+      setHeroes(pageHeroes.data.data.results);
     } else {
       setLoadingNext(false);
       setFinalPage(false);
+      setHeroes(pageHeroes.data.data.results);
     }
   }
 
