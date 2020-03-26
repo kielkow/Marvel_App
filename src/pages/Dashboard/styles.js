@@ -18,7 +18,7 @@ export const Container = styled.div`
     input {
       width: 240px;
       padding: 8px 10px;
-      border-radius: 1px;
+      border-radius: 4px;
       border: 0.5px solid ${lighten(0.6, '#444444')};
     }
     div {
