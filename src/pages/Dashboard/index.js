@@ -39,7 +39,7 @@ export default function Dashboard() {
         },
       });
 
-      if (checkFinalPage.data.length === 0) {
+      if (checkFinalPage.data.data.results.length === 0) {
         setLoadingNext(false);
         setFinalPage(true);
       } else {
@@ -90,8 +90,8 @@ export default function Dashboard() {
       },
     });
 
-    if (checkFinalPage.data.length === 0) {
-      setHeroes(pageHeroes.data);
+    if (checkFinalPage.data.data.results.length === 0) {
+      setHeroes(pageHeroes.data.data.results);
       setLoadingNext(false);
       setFinalPage(true);
     } else {
@@ -118,7 +118,7 @@ export default function Dashboard() {
       },
     });
 
-    setHeroes(pageHeroes.data);
+    setHeroes(pageHeroes.data.data.results);
     setLoadingNext(false);
   }
 
