@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+import PerfectScrollBar from 'react-perfect-scrollbar';
 import { lighten, darken } from 'polished';
 
 export const Container = styled.div`
   max-width: 800px;
   margin: 0px auto;
-  padding-top: 30px;
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
   header {
@@ -45,7 +46,7 @@ export const Content = styled.form`
   justify-content: left;
   align-items: center;
   background: #fff;
-  margin-top: 30px;
+  margin-top: 10px;
   border-radius: 4px;
   padding: 20px;
   border-bottom: 0.5px solid #c5c4c4;
@@ -88,10 +89,12 @@ export const ContentChild = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-height: 320px;
   background: #fff;
   margin-top: 10px;
   border-radius: 4px;
   padding: 10px;
+  border-bottom: 0.5px solid #c5c4c4;
   header {
     width: 100%;
     padding-left: 10px;
@@ -112,7 +115,7 @@ export const ContentChild = styled.form`
   }
 `;
 
-export const SeriesList = styled.ul`
+export const SeriesList = styled(PerfectScrollBar)`
   margin-top: 10px;
   width: 100%;
   padding-left: 10px;
