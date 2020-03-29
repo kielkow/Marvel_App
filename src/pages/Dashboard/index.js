@@ -70,29 +70,7 @@ export default function Dashboard() {
 
   async function next() {
     setLoadingNext(true);
-
     setPage((page += 1));
-
-    const pageHeroes = await jsonserverApi.get('/heroes', {
-      params: {
-        _page: page,
-      },
-    });
-
-    const checkFinalPage = await jsonserverApi.get('/heroes', {
-      params: {
-        _page: page + 1,
-      },
-    });
-
-    if (checkFinalPage.data.length === 0) {
-      setHeroes(pageHeroes.data);
-      setLoadingNext(false);
-      setFinalPage(true);
-    } else {
-      setLoadingNext(false);
-      setFinalPage(false);
-    }
   }
 
   async function previous() {
@@ -103,13 +81,6 @@ export default function Dashboard() {
       setPage((page -= 1));
     }
 
-    const pageHeroes = await jsonserverApi.get('/heroes', {
-      params: {
-        _page: page,
-      },
-    });
-
-    setHeroes(pageHeroes.data);
     setLoadingNext(false);
   }
 
