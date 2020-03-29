@@ -21,8 +21,6 @@ import {
   Next,
 } from './styles';
 
-import jsonserverApi from '~/services/jsonserverApi';
-
 import * as HeroActions from '../../store/modules/hero/actions';
 
 export default function Dashboard() {
@@ -89,20 +87,15 @@ export default function Dashboard() {
 
   async function searchheroe(e) {
     if (e.target.value === '' || e.target.value === null) {
-      const originalHeroes = await jsonserverApi.get('/heroes', {
-        params: {
-          _page: page,
-        },
-      });
-      setHeroes(originalHeroes.data);
+      const data = heroesdata.slice(slice[0], slice[1]);
+      setHeroes(data);
       return;
     }
-    const similarHeroes = await jsonserverApi.get('/heroes', {
-      params: {
-        name_like: e.target.value,
-      },
+    const similarHeroes = heroesdata.filter(hero => {
+      const inputValue = new RegExp(e.target.value, 'gi');
+      return hero.name.match(inputValue);
     });
-    setHeroes(similarHeroes.data);
+    setHeroes(similarHeroes);
   }
 
   function jumpTooPage() {
