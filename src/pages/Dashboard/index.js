@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prefer-const */
 import React, { useState, useEffect } from 'react';
@@ -129,6 +131,10 @@ export default function Dashboard() {
     setHeroes(similarHeroes.data);
   }
 
+  function jumpToPage(selectedPage) {
+    setPage(selectedPage);
+  }
+
   return (
     <Container>
       <strong>
@@ -186,7 +192,25 @@ export default function Dashboard() {
         >
           Previous
         </Previous>
-        <span>{page}</span>
+        <span
+          style={{
+            display: `${page - 1 === 0 ? 'none' : 'block'}`,
+            cursor: 'pointer',
+          }}
+          onClick={() => jumpToPage(page - 1)}
+        >
+          {page - 1}
+        </span>
+        <span style={{ fontSize: '18px' }}>{page}</span>
+        <span
+          style={{
+            display: `${finalPage ? 'none' : 'block'}`,
+            cursor: 'pointer',
+          }}
+          onClick={() => jumpToPage(page + 1)}
+        >
+          {page + 1}
+        </span>
         <Next
           type="button"
           onClick={() => next()}
