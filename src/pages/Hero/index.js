@@ -11,6 +11,22 @@ import { Container, Content, ContentChild, SeriesList } from './styles';
 export default function Hero() {
   const herodata = useSelector(state => state.hero);
 
+  function splitTitle(value) {
+    if (value.includes('#')) {
+      const splitValue = value.split('#');
+      return splitValue[0];
+    }
+    return value;
+  }
+
+  function splitNumber(value) {
+    if (value.includes('#')) {
+      const splitValue = value.split('#');
+      return `#${splitValue[1]}`;
+    }
+    return 'Special Edition';
+  }
+
   return (
     <Container>
       <header>
@@ -27,7 +43,10 @@ export default function Hero() {
       </header>
       <Content>
         <img
-          src="https://api.adorable.io/avatars/50/abott@adorable.png"
+          src={
+            `${herodata.hero.thumbnail.path}.${herodata.hero.thumbnail.extension}` ||
+            'https://api.adorable.io/avatars/50/abott@adorable.png'
+          }
           alt={herodata.hero.name}
         />
         <div>
@@ -46,7 +65,7 @@ export default function Hero() {
               disabled
               value={
                 herodata.hero.description ||
-                'This hero don´t have a description'
+                'This hero doesn´t have a description'
               }
             />
           </div>
@@ -56,30 +75,30 @@ export default function Hero() {
         <header>
           <strong>
             <FaBookOpen />
-            Series
+            Comics
           </strong>
         </header>
         <SeriesList>
-          {herodata.hero.series.items.length === 0 ? (
+          {herodata.hero.comics.items.length === 0 ? (
             <span style={{ color: '#444444' }}> Any serie found...</span>
           ) : (
-            herodata.hero.series.items.map((serie, index) => (
+            herodata.hero.comics.items.map((comic, index) => (
               <li key={index}>
                 <img
                   src="https://api.adorable.io/avatars/50/abott@adorable.png"
-                  alt={serie.name}
+                  alt={comic.name}
                 />
                 <div id="content">
                   <div>
-                    <span>Title: Teste</span>
-                    <span>Number: #123</span>
+                    <span>{`Title: ${splitTitle(comic.name)}`}</span>
+                    <span>{`Number: ${splitNumber(comic.name)}`}</span>
                   </div>
                   <textarea
                     name="description"
                     disabled
                     value={
                       herodata.hero.description ||
-                      'This hero don´t have a description'
+                      'This serie doesn´t have a description'
                     }
                   />
                 </div>

@@ -159,7 +159,7 @@ export default function Dashboard() {
               <li key={hero.id}>
                 <span>{hero.name}</span>
                 <span>
-                  {hero.description || 'This hero don´t have a description'}
+                  {hero.description || 'This hero doesn´t have a description'}
                 </span>
                 <span>
                   {format(
