@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prefer-const */
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Input } from '@rocketseat/unform';
 import { MdEdit } from 'react-icons/md';
 import { FaSuperpowers } from 'react-icons/fa';
@@ -9,9 +10,16 @@ import { parseISO, format } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
 import history from '~/services/history';
 
-import { Container, Content, Pagination, Previous, Next } from './styles';
+import {
+  Container,
+  Content,
+  HeroesList,
+  Pagination,
+  Previous,
+  Next,
+} from './styles';
 
-import api from '~/services/api';
+import jsonserverApi from '~/services/jsonserverApi';
 
 import * as HeroActions from '../../store/modules/hero/actions';
 
@@ -20,26 +28,28 @@ export default function Dashboard() {
   let [page, setPage] = useState(1);
   const [loadingNext, setLoadingNext] = useState(false);
   const [finalPage, setFinalPage] = useState(false);
-  const userInfo = useSelector(state => state.auth);
-  const heroesdata = useSelector(state => state.user.heroes);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     async function loadHeroes() {
-      setHeroes(heroesdata.data.results);
-
-      const checkFinalPage = await api.get('/v1/public/characters', {
+      const response = await jsonserverApi.get('/heroes', {
         params: {
-          ts: userInfo.timestamp,
-          apikey: userInfo.publickey,
-          hash: userInfo.hash,
-          limit: 5,
-          offset: (page + 1 - 1) * 5,
+          _page: page,
         },
       });
 
-      if (checkFinalPage.data.data.results.length === 0) {
+      const { data } = response;
+
+      setHeroes(data);
+
+      const checkFinalPage = await jsonserverApi.get('/heroes', {
+        params: {
+          _page: page + 1,
+        },
+      });
+
+      if (checkFinalPage.data.length === 0) {
         setLoadingNext(false);
         setFinalPage(true);
       } else {
@@ -49,13 +59,7 @@ export default function Dashboard() {
     }
 
     loadHeroes();
-  }, [
-    heroesdata.data.results,
-    page,
-    userInfo.hash,
-    userInfo.publickey,
-    userInfo.timestamp,
-  ]);
+  }, [page]);
 
   function editRequest(hero) {
     dispatch(HeroActions.updateHeroRequest(hero));
@@ -67,34 +71,25 @@ export default function Dashboard() {
 
     setPage((page += 1));
 
-    const pageHeroes = await api.get('/v1/public/characters', {
+    const pageHeroes = await jsonserverApi.get('/heroes', {
       params: {
-        ts: userInfo.timestamp,
-        apikey: userInfo.publickey,
-        hash: userInfo.hash,
-        limit: 5,
-        offset: (page - 1) * 5,
+        _page: page,
       },
     });
 
-    const checkFinalPage = await api.get('/v1/public/characters', {
+    const checkFinalPage = await jsonserverApi.get('/heroes', {
       params: {
-        ts: userInfo.timestamp,
-        apikey: userInfo.publickey,
-        hash: userInfo.hash,
-        limit: 5,
-        offset: (page + 1 - 1) * 5,
+        _page: page + 1,
       },
     });
 
-    if (checkFinalPage.data.data.results.length === 0) {
+    if (checkFinalPage.data.length === 0) {
+      setHeroes(pageHeroes.data);
       setLoadingNext(false);
       setFinalPage(true);
-      setHeroes(pageHeroes.data.data.results);
     } else {
       setLoadingNext(false);
       setFinalPage(false);
-      setHeroes(pageHeroes.data.data.results);
     }
   }
 
@@ -106,29 +101,29 @@ export default function Dashboard() {
       setPage((page -= 1));
     }
 
-    const pageHeroes = await api.get('/v1/public/characters', {
+    const pageHeroes = await jsonserverApi.get('/heroes', {
       params: {
-        ts: userInfo.timestamp,
-        apikey: userInfo.publickey,
-        hash: userInfo.hash,
-        limit: 5,
-        offset: (page - 1) * 5,
+        _page: page,
       },
     });
 
-    setHeroes(pageHeroes.data.data.results);
+    setHeroes(pageHeroes.data);
     setLoadingNext(false);
   }
 
   async function searchheroe(e) {
     if (e.target.value === '' || e.target.value === null) {
-      const originalHeroes = await api.get('/ordersheroes');
+      const originalHeroes = await jsonserverApi.get('/heroes', {
+        params: {
+          _page: page,
+        },
+      });
       setHeroes(originalHeroes.data);
       return;
     }
-    const similarHeroes = await api.get('/ordersheroes', {
+    const similarHeroes = await jsonserverApi.get('/heroes', {
       params: {
-        name: e.target.value,
+        name_like: e.target.value,
       },
     });
     setHeroes(similarHeroes.data);
@@ -156,7 +151,7 @@ export default function Dashboard() {
           <span>Modified</span>
           <span />
         </header>
-        <ul>
+        <HeroesList>
           {heroes.length === 0 ? (
             <span style={{ color: '#444444' }}> Any hero found...</span>
           ) : (
@@ -180,7 +175,7 @@ export default function Dashboard() {
               </li>
             ))
           )}
-        </ul>
+        </HeroesList>
       </Content>
       <Pagination>
         <Previous

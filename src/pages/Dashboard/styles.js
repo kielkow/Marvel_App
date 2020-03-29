@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PerfectScrollBar from 'react-perfect-scrollbar';
 import { lighten, darken } from 'polished';
 
 export const Container = styled.div`
@@ -63,49 +64,6 @@ export const Content = styled.div`
     margin-bottom: 20px;
     padding-left: 15px;
   }
-  ul {
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    li {
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      border-radius: 4px;
-      border-bottom: 1px solid #eee;
-      background: #fff;
-      & + li {
-        margin-top: 15px;
-      }
-      color: ${lighten(0.03, '#444444')};
-      svg {
-        transition: all 0.1s ease-in-out;
-        &:hover {
-          color: ${'#f0141e'};
-          cursor: pointer;
-          -webkit-transform: scale(1.3);
-          -ms-transform: scale(1.3);
-          transform: scale(1.3);
-        }
-      }
-    }
-    li > span:first-child {
-      width: 20.5%;
-    }
-    li > span:first-child + span {
-      width: 64%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-right: 15px;
-    }
-    li > span:first-child + span + span {
-      width: 31%;
-    }
-    li > div {
-      width: 0%;
-    }
-  }
   header > span:first-child {
     width: 23.5%;
   }
@@ -115,6 +73,51 @@ export const Content = styled.div`
   }
   header > span:first-child + span + span {
     width: 40.5%;
+  }
+`;
+
+export const HeroesList = styled(PerfectScrollBar)`
+  max-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  li {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 4px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    & + li {
+      margin-top: 15px;
+    }
+    color: ${lighten(0.03, '#444444')};
+    svg {
+      transition: all 0.1s ease-in-out;
+      &:hover {
+        color: ${'#f0141e'};
+        cursor: pointer;
+        -webkit-transform: scale(1.3);
+        -ms-transform: scale(1.3);
+        transform: scale(1.3);
+      }
+    }
+  }
+  li > span:first-child {
+    width: 20.5%;
+  }
+  li > span:first-child + span {
+    width: 64%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 15px;
+  }
+  li > span:first-child + span + span {
+    width: 31%;
+  }
+  li > div {
+    width: 0%;
   }
 `;
 
