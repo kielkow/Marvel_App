@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prefer-const */
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input } from '@rocketseat/unform';
 import { MdEdit } from 'react-icons/md';
 import { FaSuperpowers } from 'react-icons/fa';
@@ -28,40 +28,41 @@ import * as HeroActions from '../../store/modules/hero/actions';
 export default function Dashboard() {
   const [heroes, setHeroes] = useState([]);
   let [page, setPage] = useState(1);
+  let [slice, setSlice] = useState([0, 10]);
   const [loadingNext, setLoadingNext] = useState(false);
   const [finalPage, setFinalPage] = useState(false);
+  const [finalPagespan, setFinalPageSpan] = useState(false);
+  const heroesdata = useSelector(state => state.user.heroes.data.results);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     async function loadHeroes() {
-      const response = await jsonserverApi.get('/heroes', {
-        params: {
-          _page: page,
-        },
-      });
-
-      const { data } = response;
+      const data = heroesdata.slice(slice[0], slice[1]);
 
       setHeroes(data);
 
-      const checkFinalPage = await jsonserverApi.get('/heroes', {
-        params: {
-          _page: page + 1,
-        },
-      });
+      const checkFinalPage = heroesdata.slice(slice[0] + 10, slice[1] + 10);
 
-      if (checkFinalPage.data.length === 0) {
+      if (checkFinalPage.length === 0) {
         setLoadingNext(false);
         setFinalPage(true);
       } else {
         setLoadingNext(false);
         setFinalPage(false);
       }
+
+      const checkFinalPageSpan = heroesdata.slice(slice[0] + 20, slice[1] + 20);
+
+      if (checkFinalPageSpan.length === 0) {
+        setFinalPageSpan(true);
+      } else {
+        setFinalPageSpan(false);
+      }
     }
 
     loadHeroes();
-  }, [page]);
+  }, [slice]);
 
   function editRequest(hero) {
     dispatch(HeroActions.updateHeroRequest(hero));
@@ -71,14 +72,16 @@ export default function Dashboard() {
   async function next() {
     setLoadingNext(true);
     setPage((page += 1));
+    setSlice([slice[0] + 10, slice[1] + 10]);
   }
 
   async function previous() {
     setLoadingNext(true);
     setFinalPage(false);
 
-    if (page !== 1) {
+    if (slice[0] !== 0) {
       setPage((page -= 1));
+      setSlice([slice[0] - 10, slice[1] - 10]);
     }
 
     setLoadingNext(false);
@@ -102,8 +105,22 @@ export default function Dashboard() {
     setHeroes(similarHeroes.data);
   }
 
-  function jumpToPage(selectedPage) {
-    setPage(selectedPage);
+  function jumpTooPage() {
+    setLoadingNext(true);
+    setPage((page += 2));
+    setSlice([slice[0] + 20, slice[1] + 20]);
+  }
+
+  function returnTooPage() {
+    setLoadingNext(true);
+    setFinalPage(false);
+
+    if (slice[0] !== 0) {
+      setPage((page -= 2));
+      setSlice([slice[0] - 20, slice[1] - 20]);
+    }
+
+    setLoadingNext(false);
   }
 
   return (
@@ -165,10 +182,19 @@ export default function Dashboard() {
         </Previous>
         <span
           style={{
+            display: `${page - 1 <= 1 ? 'none' : 'block'}`,
+            cursor: 'pointer',
+          }}
+          onClick={returnTooPage}
+        >
+          {page - 2}
+        </span>
+        <span
+          style={{
             display: `${page - 1 === 0 ? 'none' : 'block'}`,
             cursor: 'pointer',
           }}
-          onClick={() => jumpToPage(page - 1)}
+          onClick={previous}
         >
           {page - 1}
         </span>
@@ -178,9 +204,18 @@ export default function Dashboard() {
             display: `${finalPage ? 'none' : 'block'}`,
             cursor: 'pointer',
           }}
-          onClick={() => jumpToPage(page + 1)}
+          onClick={next}
         >
           {page + 1}
+        </span>
+        <span
+          style={{
+            display: `${finalPagespan ? 'none' : 'block'}`,
+            cursor: 'pointer',
+          }}
+          onClick={jumpTooPage}
+        >
+          {page + 2}
         </span>
         <Next
           type="button"

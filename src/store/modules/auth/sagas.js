@@ -20,7 +20,7 @@ export function* signIn({ payload }) {
         `?ts=${timestamp}` +
         `&apikey=${publickey}` +
         `&hash=${hash}` +
-        `&offset=0&limit=5`
+        `&limit=100`
     );
 
     const token = response.data.etag;
