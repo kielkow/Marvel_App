@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -7,6 +8,8 @@ import { Input } from '@rocketseat/unform';
 
 import { Link } from 'react-router-dom';
 import { Container, Content, ContentChild, SeriesList } from './styles';
+
+import background_comic from '../../assets/background_comic.jpg';
 
 export default function Hero() {
   const herodata = useSelector(state => state.hero);
@@ -84,10 +87,7 @@ export default function Hero() {
           ) : (
             herodata.hero.comics.items.map((comic, index) => (
               <li key={index}>
-                <img
-                  src="https://api.adorable.io/avatars/50/abott@adorable.png"
-                  alt={comic.name}
-                />
+                <img src={background_comic} alt={comic.name} />
                 <div id="content">
                   <div>
                     <span>{`Title: ${splitTitle(comic.name)}`}</span>
