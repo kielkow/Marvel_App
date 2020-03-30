@@ -28,18 +28,26 @@ export default function SignIn() {
     <>
       <img src={logo} alt="MarvelApp" />
 
-      <Form schema={schema} onSubmit={handleSubmit}>
-        <label>PRIVATE KEY</label>
+      <Form data-testid="sign-form" schema={schema} onSubmit={handleSubmit}>
+        <label htmlFor="privatekey">PRIVATE KEY</label>
         <Input
+          id="privatekey"
           name="privatekey"
           type="text"
           placeholder="Your private key..."
         />
 
-        <label>PUBLIC KEY</label>
-        <Input name="publickey" type="text" placeholder="Your public key..." />
+        <label htmlFor="publickey">PUBLIC KEY</label>
+        <Input
+          id="publickey"
+          name="publickey"
+          type="text"
+          placeholder="Your public key..."
+        />
 
-        <button type="submit">{loading ? 'Loading...' : 'Enter'}</button>
+        <button id="signin-btn" type="submit">
+          {loading ? 'Loading...' : 'Enter'}
+        </button>
         <Link to="/register">Create free account</Link>
       </Form>
     </>
