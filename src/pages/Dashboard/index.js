@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input } from '@rocketseat/unform';
-import { MdEdit } from 'react-icons/md';
+import { MdVisibility } from 'react-icons/md';
 import { FaSuperpowers } from 'react-icons/fa';
 
 import { parseISO, format } from 'date-fns';
@@ -257,7 +257,7 @@ export default function Dashboard() {
                         'dd-MM-yyyy hh:mm'
                       ).replace(/-/g, '/')}h` || 'Uninformed'}
                 </span>
-                <MdEdit size={22} onClick={() => editRequest(hero)} />
+                <MdVisibility size={28} onClick={() => editRequest(hero)} />
               </li>
             ))
           )}

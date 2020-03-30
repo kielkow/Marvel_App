@@ -76,7 +76,7 @@ export const HeroesList = styled(PerfectScrollBar)`
   li {
     display: flex;
     align-items: center;
-    padding: 15px;
+    padding: 10px 15px;
     border-radius: 4px;
     border-bottom: 1px solid #eee;
     background: #fff;
