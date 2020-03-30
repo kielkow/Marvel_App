@@ -50,7 +50,7 @@ export function* signUp({ payload }) {
 
     history.push('/');
   } catch (err) {
-    toast.error('Registration failure, please verify your data');
+    toast.info('Sorry, but this functionality is not avaible yet :(');
 
     yield put(signFailure());
   }
