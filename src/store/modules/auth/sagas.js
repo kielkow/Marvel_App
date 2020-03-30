@@ -14,17 +14,88 @@ export function* signIn({ payload }) {
     const timestamp = Math.floor(Date.now() / 1000);
     const hash = md5(`${timestamp}${privatekey}${publickey}`);
 
-    const response = yield call(
-      api.get,
-      '/v1/public/characters' +
-        `?ts=${timestamp}` +
-        `&apikey=${publickey}` +
-        `&hash=${hash}` +
-        `&limit=100`
+    toast.info(
+      'Just few seconds, we´re preparing your enviroment right now! 😁',
+      {
+        autoClose: 4000,
+      }
     );
 
-    const token = response.data.etag;
-    const heroes = response.data;
+    const [res1, res2, res3, res4, res5, res6, res7] = yield all([
+      call(
+        api.get,
+        '/v1/public/characters' +
+          `?ts=${timestamp}` +
+          `&apikey=${publickey}` +
+          `&hash=${hash}` +
+          `&limit=100`
+      ),
+      call(
+        api.get,
+        '/v1/public/characters' +
+          `?ts=${timestamp}` +
+          `&apikey=${publickey}` +
+          `&hash=${hash}` +
+          `&offset=100` +
+          `&limit=100`
+      ),
+      call(
+        api.get,
+        '/v1/public/characters' +
+          `?ts=${timestamp}` +
+          `&apikey=${publickey}` +
+          `&hash=${hash}` +
+          `&offset=200` +
+          `&limit=100`
+      ),
+      call(
+        api.get,
+        '/v1/public/characters' +
+          `?ts=${timestamp}` +
+          `&apikey=${publickey}` +
+          `&hash=${hash}` +
+          `&offset=300` +
+          `&limit=100`
+      ),
+      call(
+        api.get,
+        '/v1/public/characters' +
+          `?ts=${timestamp}` +
+          `&apikey=${publickey}` +
+          `&hash=${hash}` +
+          `&offset=400` +
+          `&limit=100`
+      ),
+      call(
+        api.get,
+        '/v1/public/characters' +
+          `?ts=${timestamp}` +
+          `&apikey=${publickey}` +
+          `&hash=${hash}` +
+          `&offset=500` +
+          `&limit=100`
+      ),
+      call(
+        api.get,
+        '/v1/public/characters' +
+          `?ts=${timestamp}` +
+          `&apikey=${publickey}` +
+          `&hash=${hash}` +
+          `&offset=600` +
+          `&limit=100`
+      ),
+    ]);
+
+    const finalResponse = res1.data.data.results
+      .concat(res2.data.data.results)
+      .concat(res3.data.data.results)
+      .concat(res4.data.data.results)
+      .concat(res5.data.data.results)
+      .concat(res6.data.data.results)
+      .concat(res7.data.data.results);
+
+    const token = res1.data.etag;
+    const heroes = finalResponse;
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
@@ -50,7 +121,7 @@ export function* signUp({ payload }) {
 
     history.push('/');
   } catch (err) {
-    toast.info('Sorry, but this functionality is not avaible yet :(');
+    toast.info('Sorry, but this functionality is not avaible yet 😕');
 
     yield put(signFailure());
   }

@@ -30,7 +30,7 @@ export default function Dashboard() {
   const [loadingNext, setLoadingNext] = useState(false);
   const [finalPage, setFinalPage] = useState(false);
   const [finalPagespan, setFinalPageSpan] = useState(false);
-  const heroesdata = useSelector(state => state.user.heroes.data.results);
+  const heroesdata = useSelector(state => state.user.heroes);
 
   const dispatch = useDispatch();
 
@@ -149,14 +149,21 @@ export default function Dashboard() {
                   {hero.description || 'This hero doesn´t have a description'}
                 </span>
                 <span>
-                  {format(
-                    zonedTimeToUtc(
-                      parseISO(hero.modified),
-                      'America/Sao_Paulo'
-                    ),
-                    'dd-MM-yyyy hh:mm'
-                  ).replace(/-/g, '/')}
-                  h
+                  {hero.modified === '-0001-11-30T00:00:00-0500'
+                    ? `${format(
+                        zonedTimeToUtc(
+                          parseISO('2012-10-12T17:25:43-0400'),
+                          'America/Sao_Paulo'
+                        ),
+                        'dd-MM-yyyy hh:mm'
+                      ).replace(/-/g, '/')}h` || 'Uninformed'
+                    : `${format(
+                        zonedTimeToUtc(
+                          parseISO(hero.modified),
+                          'America/Sao_Paulo'
+                        ),
+                        'dd-MM-yyyy hh:mm'
+                      ).replace(/-/g, '/')}h` || 'Uninformed'}
                 </span>
                 <MdEdit size={22} onClick={() => editRequest(hero)} />
               </li>
