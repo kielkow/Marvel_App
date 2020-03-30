@@ -198,10 +198,28 @@ export default function Dashboard() {
           style={{ fontFamily: 'Arial, FontAwesome' }}
           onChange={searchheroe}
         />
-        <span id="recent" onClick={searchByAll}>
+        <span
+          id="recent"
+          onClick={searchByAll}
+          style={{
+            color: `${!recents ? '#fff' : '#4c4c4c'}`,
+            background: `${!recents ? '#F0141D' : 'none'}`,
+            padding: `${!recents ? '5px' : '0px'}`,
+            borderRadius: `${!recents ? '15%' : '0%'}`,
+          }}
+        >
           #all
         </span>
-        <span id="recent" onClick={searchByRecent}>
+        <span
+          id="recent"
+          onClick={searchByRecent}
+          style={{
+            color: `${recents ? '#fff' : '#4c4c4c'}`,
+            background: `${recents ? '#F0141D' : 'none'}`,
+            padding: `${recents ? '5px' : '0px'}`,
+            borderRadius: `${recents ? '15%' : '0%'}`,
+          }}
+        >
           #recent
         </span>
       </header>
@@ -272,7 +290,7 @@ export default function Dashboard() {
         >
           {page - 1}
         </span>
-        <span style={{ fontSize: '18px' }}>{page}</span>
+        <span style={{ fontSize: '18px', color: '#4c4c4c' }}>{page}</span>
         <span
           style={{
             display: `${finalPage ? 'none' : 'block'}`,
