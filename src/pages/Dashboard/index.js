@@ -22,6 +22,7 @@ import {
 } from './styles';
 
 import * as HeroActions from '../../store/modules/hero/actions';
+import * as UserActions from '../../store/modules/user/actions';
 
 export default function Dashboard() {
   const [heroes, setHeroes] = useState([]);
@@ -30,12 +31,44 @@ export default function Dashboard() {
   const [loadingNext, setLoadingNext] = useState(false);
   const [finalPage, setFinalPage] = useState(false);
   const [finalPagespan, setFinalPageSpan] = useState(false);
+  const [recents, setRecents] = useState(false);
   const heroesdata = useSelector(state => state.user.heroes);
+  const recentHeroes = useSelector(state => state.user.recents);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     async function loadHeroes() {
+      if (recents === true) {
+        const data = recentHeroes.slice(slice[0], slice[1]).reverse();
+
+        setHeroes(data);
+
+        setHeroes(data);
+
+        const checkFinalPage = recentHeroes.slice(slice[0] + 10, slice[1] + 10);
+
+        if (checkFinalPage.length === 0) {
+          setLoadingNext(false);
+          setFinalPage(true);
+        } else {
+          setLoadingNext(false);
+          setFinalPage(false);
+        }
+
+        const checkFinalPageSpan = recentHeroes.slice(
+          slice[0] + 20,
+          slice[1] + 20
+        );
+
+        if (checkFinalPageSpan.length === 0) {
+          setFinalPageSpan(true);
+        } else {
+          setFinalPageSpan(false);
+        }
+        return;
+      }
+
       const data = heroesdata.slice(slice[0], slice[1]);
 
       setHeroes(data);
@@ -63,8 +96,17 @@ export default function Dashboard() {
   }, [slice]);
 
   function editRequest(hero) {
-    dispatch(HeroActions.updateHeroRequest(hero));
-    history.push('/hero');
+    const existOnRecents = recentHeroes.indexOf(hero);
+    if (existOnRecents !== -1) {
+      dispatch(HeroActions.updateHeroRequest(hero));
+      history.push('/hero');
+    } else {
+      const updatedRecents = [...recentHeroes];
+      updatedRecents.push(hero);
+      dispatch(UserActions.addRecentHero(updatedRecents));
+      dispatch(HeroActions.updateHeroRequest(hero));
+      history.push('/hero');
+    }
   }
 
   async function next() {
@@ -87,8 +129,21 @@ export default function Dashboard() {
 
   async function searchheroe(e) {
     if (e.target.value === '' || e.target.value === null) {
+      if (recents === true) {
+        const data = recentHeroes.slice(slice[0], slice[1]).reverse();
+        setHeroes(data);
+        return;
+      }
       const data = heroesdata.slice(slice[0], slice[1]);
       setHeroes(data);
+      return;
+    }
+    if (recents === true) {
+      const similarHeroes = recentHeroes.filter(hero => {
+        const inputValue = new RegExp(e.target.value, 'gi');
+        return hero.name.match(inputValue);
+      });
+      setHeroes(similarHeroes);
       return;
     }
     const similarHeroes = heroesdata.filter(hero => {
@@ -116,6 +171,19 @@ export default function Dashboard() {
     setLoadingNext(false);
   }
 
+  function searchByRecent() {
+    setRecents(true);
+    setPage(1);
+    setSlice([0, 10]);
+    setHeroes(recentHeroes);
+  }
+
+  function searchByAll() {
+    setRecents(false);
+    setPage(1);
+    setSlice([0, 10]);
+  }
+
   return (
     <Container>
       <strong>
@@ -130,6 +198,12 @@ export default function Dashboard() {
           style={{ fontFamily: 'Arial, FontAwesome' }}
           onChange={searchheroe}
         />
+        <span id="recent" onClick={searchByAll}>
+          #all
+        </span>
+        <span id="recent" onClick={searchByRecent}>
+          #recent
+        </span>
       </header>
       <Content>
         <header>

@@ -5,10 +5,17 @@ export function signInRequest(privatekey, publickey) {
   };
 }
 
-export function signInSuccess(token, heroes, timestamp, publickey, hash) {
+export function signInSuccess(
+  token,
+  heroes,
+  timestamp,
+  publickey,
+  hash,
+  recents
+) {
   return {
     type: '@auth/SIGN_IN_SUCCESS',
-    payload: { token, heroes, timestamp, publickey, hash },
+    payload: { token, heroes, timestamp, publickey, hash, recents },
   };
 }
 

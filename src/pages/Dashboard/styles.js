@@ -20,29 +20,21 @@ export const Container = styled.div`
   }
   header {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     input {
       width: 240px;
       padding: 8px 10px;
       border-radius: 4px;
       border: 0.5px solid ${lighten(0.6, '#444444')};
     }
-    div {
-      display: flex;
-      justify-content: center;
-      a {
-        background: #f0141e;
-        color: #fff;
-        padding: 5px 10px;
-        border: 0;
-        font-weight: bold;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        &:hover {
-          background: ${darken(0.05, '#f0141e')};
-        }
+    #recent {
+      font-size: 16px;
+      margin-left: 30px;
+      border: 0;
+      color: ${lighten(0.03, '#444444')};
+      cursor: pointer;
+      &:hover {
+        color: ${darken(0.05, '#f0141e')};
       }
     }
   }

@@ -99,7 +99,7 @@ export function* signIn({ payload }) {
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
-    yield put(signInSuccess(token, heroes, timestamp, publickey, hash));
+    yield put(signInSuccess(token, heroes, timestamp, publickey, hash, []));
 
     history.push('/dashboard');
   } catch (err) {
