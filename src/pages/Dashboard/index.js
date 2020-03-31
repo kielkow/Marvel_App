@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -40,9 +41,12 @@ export default function Dashboard() {
   useEffect(() => {
     async function loadHeroes() {
       if (recents === true) {
-        const data = recentHeroes.slice(slice[0], slice[1]).reverse();
+        const reverseArray = [];
+        for (let i = recentHeroes.length - 1; i >= 0; i--) {
+          reverseArray.push(recentHeroes[i]);
+        }
 
-        setHeroes(data);
+        const data = reverseArray.slice(slice[0], slice[1]);
 
         setHeroes(data);
 
@@ -140,7 +144,12 @@ export default function Dashboard() {
   async function searchheroe(e) {
     if (e.target.value === '' || e.target.value === null) {
       if (recents === true) {
-        const data = recentHeroes.slice(slice[0], slice[1]).reverse();
+        const reverseArray = [];
+        for (let i = recentHeroes.length - 1; i >= 0; i--) {
+          reverseArray.push(recentHeroes[i]);
+        }
+
+        const data = reverseArray.slice(slice[0], slice[1]);
         setHeroes(data);
         return;
       }
