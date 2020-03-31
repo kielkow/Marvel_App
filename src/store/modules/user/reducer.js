@@ -4,6 +4,8 @@ import produce from 'immer';
 const INITIAL_STATE = {
   heroes: null,
   recents: null,
+  page: 1,
+  slice: [0, 10],
 };
 
 export default function heroes(state = INITIAL_STATE, action) {
@@ -12,10 +14,17 @@ export default function heroes(state = INITIAL_STATE, action) {
       return produce(state, draft => {
         draft.heroes = action.payload.heroes;
         draft.recents = action.payload.recents;
+        draft.page = action.payload.page;
+        draft.slice = action.payload.slice;
       });
     case '@user/ADD_RECENT_HERO':
       return produce(state, draft => {
         draft.recents = action.payload.updatedRecents;
+      });
+    case '@user/CHANGE_PAGE':
+      return produce(state, draft => {
+        draft.page = action.payload.page;
+        draft.slice = action.payload.slice;
       });
     default:
       return state;

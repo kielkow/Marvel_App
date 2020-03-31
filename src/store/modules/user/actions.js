@@ -4,3 +4,10 @@ export function addRecentHero(updatedRecents) {
     payload: { updatedRecents },
   };
 }
+
+export function changePage(page, slice) {
+  return {
+    type: '@user/CHANGE_PAGE',
+    payload: { page, slice },
+  };
+}

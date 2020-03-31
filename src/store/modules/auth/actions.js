@@ -11,11 +11,22 @@ export function signInSuccess(
   timestamp,
   publickey,
   hash,
-  recents
+  recents,
+  page,
+  slice
 ) {
   return {
     type: '@auth/SIGN_IN_SUCCESS',
-    payload: { token, heroes, timestamp, publickey, hash, recents },
+    payload: {
+      token,
+      heroes,
+      timestamp,
+      publickey,
+      hash,
+      recents,
+      page,
+      slice,
+    },
   };
 }
 

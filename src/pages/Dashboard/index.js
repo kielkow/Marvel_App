@@ -26,20 +26,25 @@ import * as HeroActions from '../../store/modules/hero/actions';
 import * as UserActions from '../../store/modules/user/actions';
 
 export default function Dashboard() {
+  const heroesdata = useSelector(state => state.user.heroes);
+  const recentHeroes = useSelector(state => state.user.recents);
+  const getPage = useSelector(state => state.user.page);
+  const getSlice = useSelector(state => state.user.slice);
+
   const [heroes, setHeroes] = useState([]);
-  let [page, setPage] = useState(1);
-  let [slice, setSlice] = useState([0, 10]);
   const [loadingNext, setLoadingNext] = useState(false);
   const [finalPage, setFinalPage] = useState(false);
   const [finalPagespan, setFinalPageSpan] = useState(false);
   const [recents, setRecents] = useState(false);
-  const heroesdata = useSelector(state => state.user.heroes);
-  const recentHeroes = useSelector(state => state.user.recents);
+  let [page, setPage] = useState(getPage);
+  let [slice, setSlice] = useState(getSlice);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     async function loadHeroes() {
+      dispatch(UserActions.changePage(page, slice));
+
       if (recents === true) {
         const reverseArray = [];
         for (let i = recentHeroes.length - 1; i >= 0; i--) {
