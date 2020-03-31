@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-plusplus */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -282,6 +283,14 @@ export default function Dashboard() {
                         ),
                         'dd-MM-yyyy hh:mm'
                       ).replace(/-/g, '/')}h` || 'Uninformed'}
+                  <img
+                    src={
+                      `${hero.thumbnail.path}.${hero.thumbnail.extension}` ||
+                      'https://api.adorable.io/avatars/50/abott@adorable.png'
+                    }
+                    alt={hero.name}
+                    onClick={() => editRequest(hero)}
+                  />
                 </span>
                 <MdVisibility size={28} onClick={() => editRequest(hero)} />
               </li>

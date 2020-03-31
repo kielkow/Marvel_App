@@ -106,7 +106,20 @@ export const HeroesList = styled(PerfectScrollBar)`
     margin-right: 15px;
   }
   li > span:first-child + span + span {
-    width: 31%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 25.5%;
+    margin-right: 40px;
+
+    img {
+      min-height: 40px;
+      max-height: 40px;
+      min-width: 40px;
+      max-width: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
   }
   li > div {
     width: 0%;
