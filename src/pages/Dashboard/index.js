@@ -96,8 +96,18 @@ export default function Dashboard() {
   }, [slice]);
 
   function editRequest(hero) {
-    const existOnRecents = recentHeroes.indexOf(hero);
-    if (existOnRecents !== -1) {
+    const existOnRecents = recentHeroes.filter(recentHero => {
+      return recentHero.id === hero.id;
+    });
+    if (existOnRecents.length > 0) {
+      const updatedArray = recentHeroes.filter(recentHero => {
+        return recentHero.id !== existOnRecents[0].id;
+      });
+
+      const updatedRecents = [...updatedArray];
+      updatedRecents.push(hero);
+
+      dispatch(UserActions.addRecentHero(updatedRecents));
       dispatch(HeroActions.updateHeroRequest(hero));
       history.push('/hero');
     } else {
