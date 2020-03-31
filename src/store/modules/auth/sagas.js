@@ -17,7 +17,7 @@ export function* signIn({ payload }) {
     toast.info(
       'Just few seconds, we´re preparing your enviroment right now! 😁',
       {
-        autoClose: 4000,
+        autoClose: 5000,
       }
     );
 
