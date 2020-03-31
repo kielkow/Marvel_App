@@ -9,7 +9,7 @@ import { Input } from '@rocketseat/unform';
 import { Link } from 'react-router-dom';
 import { Container, Content, ContentChild, SeriesList } from './styles';
 
-import background_comic from '../../assets/background_comic.jpg';
+import background_comic from '../../assets/background_comic.png';
 
 export default function Hero() {
   const herodata = useSelector(state => state.hero);
