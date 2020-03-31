@@ -11,3 +11,10 @@ export function changePage(page, slice) {
     payload: { page, slice },
   };
 }
+
+export function changeRecent(recent) {
+  return {
+    type: '@user/CHANGE_RECENT',
+    payload: { recent },
+  };
+}

@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   recents: null,
   page: 1,
   slice: [0, 10],
+  recent: false,
 };
 
 export default function heroes(state = INITIAL_STATE, action) {
@@ -16,6 +17,7 @@ export default function heroes(state = INITIAL_STATE, action) {
         draft.recents = action.payload.recents;
         draft.page = action.payload.page;
         draft.slice = action.payload.slice;
+        draft.recent = action.payload.recent;
       });
     case '@user/ADD_RECENT_HERO':
       return produce(state, draft => {
@@ -25,6 +27,10 @@ export default function heroes(state = INITIAL_STATE, action) {
       return produce(state, draft => {
         draft.page = action.payload.page;
         draft.slice = action.payload.slice;
+      });
+    case '@user/CHANGE_RECENT':
+      return produce(state, draft => {
+        draft.recent = action.payload.recent;
       });
     default:
       return state;

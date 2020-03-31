@@ -13,7 +13,8 @@ export function signInSuccess(
   hash,
   recents,
   page,
-  slice
+  slice,
+  recent
 ) {
   return {
     type: '@auth/SIGN_IN_SUCCESS',
@@ -26,6 +27,7 @@ export function signInSuccess(
       recents,
       page,
       slice,
+      recent,
     },
   };
 }

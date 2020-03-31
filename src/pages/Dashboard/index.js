@@ -30,12 +30,13 @@ export default function Dashboard() {
   const recentHeroes = useSelector(state => state.user.recents);
   const getPage = useSelector(state => state.user.page);
   const getSlice = useSelector(state => state.user.slice);
+  const getRecent = useSelector(state => state.user.recent);
 
   const [heroes, setHeroes] = useState([]);
   const [loadingNext, setLoadingNext] = useState(false);
   const [finalPage, setFinalPage] = useState(false);
   const [finalPagespan, setFinalPageSpan] = useState(false);
-  const [recents, setRecents] = useState(false);
+  const [recents, setRecents] = useState(getRecent);
   let [page, setPage] = useState(getPage);
   let [slice, setSlice] = useState(getSlice);
 
@@ -44,6 +45,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function loadHeroes() {
       dispatch(UserActions.changePage(page, slice));
+      dispatch(UserActions.changeRecent(recents));
 
       if (recents === true) {
         const reverseArray = [];
