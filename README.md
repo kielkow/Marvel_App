@@ -16,7 +16,7 @@ npm install
 
 ## Usage without internet
 
-If you are not conected on internet, you can simulate de marvel API inside your machine. To do that you just need set 'http://localhost:3333' on URL api and run this command on terminal:
+If you are not conected on internet, you can simulate de marvel API inside your machine. To do that you just need set 'http://localhost:3333' as URL api and run this command on terminal:
 
 ```bash
 json-server -p 3333 server.json
